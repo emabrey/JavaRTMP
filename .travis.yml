@@ -9,4 +9,4 @@ before_install:
 install: mvn -T 1C install -DskipTests=true
 
 after_success:
-  - mvn -T 1C clean test org.jacoco:jacoco-maven-plugin:report:report org.eluder.coveralls:coveralls-maven-plugin:report
+  - mvn -T 1C clean test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report
