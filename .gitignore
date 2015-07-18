@@ -1,0 +1,30 @@
+#Compiled Files
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Maven Directory
+target/
+
+#Windows Image Metafiles
+*.DS_Store
+Thumbs.db
+
+#Eclipse IDE files
+.classpath
+.project
+.settings/
+
+#Netbeans IDE files
+nbactions.xml
+nb-configuration.xml
+
+#IntelliJ IDEA files
+.idea/
+*.iml
+
+#Include Travis YML files
+!.travis.yml

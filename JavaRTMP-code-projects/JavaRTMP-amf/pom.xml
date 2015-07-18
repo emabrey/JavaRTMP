@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>JavaRTMP-amf</artifactId>
+    <parent>
+        <groupId>com.github.emabrey</groupId>
+        <artifactId>JavaRTMP-code-projects</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+    <packaging>jar</packaging>
+
+    <name>JavaRTMP - Code Projects - Action Message Format</name>
+    <description>Classes implementing the AMF encoding and decoding functionality of JavaRTMP.</description>
+
+    <!-- Use inherited SCM (JavaRTMP has one repository) -->
+    <scm>
+        <url>${parent.project.scm.url}</url>
+        <connection>${parent.project.scm.connection}</connection>
+        <developerConnection>${parent.project.scm.developerConnection}</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <site>
+            <id>github</id>
+            <name>Github Pages</name>
+            <url>https://emabrey.github.io/JavaRTMP/code-projects/amf/</url>
+        </site>
+    </distributionManagement>
+
+    <build>
+
+        <!-- Use inherited plugin configurations for build-->
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>net.revelc.code</groupId>
+                <artifactId>formatter-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>net.orfjackal.retrolambda</groupId>
+                <artifactId>retrolambda-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>animal-sniffer-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <dependencies>
+
+        <!-- JavaRTMP Common Files -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>JavaRTMP-common</artifactId>
+        </dependency>
+
+        <!-- Project Lombok Annotations -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Findbugs Warning Supression Annotations -->
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- API interface for slf4j logging framework-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Apache MINA -->
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-core</artifactId>
+        </dependency>
+
+        <!-- JOOU Unsigned Primatives -->
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>joou</artifactId>
+        </dependency>
+
+        <!-- Google guava utility library -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
+        <!-- Functional programming -->
+        <dependency>
+            <groupId>org.functionaljava</groupId>
+            <artifactId>functionaljava</artifactId>
+        </dependency>
+
+        <!-- Javolution Real-time Utility Library -->
+        <dependency>
+            <groupId>org.javolution</groupId>
+            <artifactId>javolution-core-java</artifactId>
+        </dependency>
+
+        <!-- TestNG Unit Testing -->
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- SLF4J system.out API binding -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

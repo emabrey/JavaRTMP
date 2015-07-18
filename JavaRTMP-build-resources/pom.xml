@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.github.emabrey</groupId>
+        <artifactId>JavaRTMP-parent</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>JavaRTMP-build-resources</artifactId>
+    <packaging>jar</packaging>
+
+    <name>JavaRTMP - Static Maven Resources</name>
+    <description>The static configuration and resource files needed by the Maven builds.</description>
+
+    <!-- Use inherited SCM (JavaRTMP has one repository) -->
+    <scm>
+        <url>${parent.project.scm.url}</url>
+        <connection>${parent.project.scm.connection}</connection>
+        <developerConnection>${parent.project.scm.developerConnection}</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <site>
+            <id>github</id>
+            <name>Github Pages</name>
+            <url>https://emabrey.github.io/JavaRTMP/build-resources/</url>
+        </site>
+    </distributionManagement>
+
+    <build>
+        <plugins>
+
+            <!-- Building this POM runs inherited enforcement policies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+
+            <!-- Generate the JAR using inherited configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

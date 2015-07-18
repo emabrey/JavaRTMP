@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.emabrey</groupId>
+    <artifactId>JavaRTMP-parent</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>9</version>
+    </parent>
+    <packaging>pom</packaging>
+
+    <name>JavaRTMP - Parent</name>
+    <description>JavaRTMP is a pure Java client implementation of the Real Time Messaging Protocol.</description>
+    <url>https://emabrey.github.io/JavaRTMP</url>
+
+    <developers>
+        <developer>
+            <id>emabrey</id>
+            <name>Emily Mabrey</name>
+            <email>emilymabrey93@gmail.com</email>
+            <timezone>-5</timezone>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>MIT Expat License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <comments>Copyright 2015 Emily Mabrey</comments>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/emabrey/JavaRTMP</url>
+        <connection>scm:git:git://github.com/emabrey/JavaRTMP.git</connection>
+        <developerConnection>scm:git:git@github.com:emabrey/JavaRTMP.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <site>
+            <id>github</id>
+            <name>Github Pages</name>
+            <url>https://emabrey.github.io/JavaRTMP/</url>
+        </site>
+    </distributionManagement>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/emabrey/JavaRTMP/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>travis-ci</system>
+        <url>https://travis-ci.org/emabrey/JavaRTMP</url>
+    </ciManagement>
+
+    <modules>
+        <module>JavaRTMP-build-resources</module>
+        <module>JavaRTMP-code-projects</module>
+    </modules>
+
+    <properties>
+        <lineLength>120</lineLength>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.java.version>1.8</project.java.version>
+
+        <plugin.maven-javadoc.version>2.10.3</plugin.maven-javadoc.version>
+
+        <tool.proguard.version>5.2.1</tool.proguard.version>
+        <tool.pegdown-doclet.version>1.1.1</tool.pegdown-doclet.version>
+        <tool.pegdown-doclet.style>Googlecode</tool.pegdown-doclet.style>
+        <tool.reflow-skin.version>1.1.1</tool.reflow-skin.version>
+
+        <dependency.slf4j.version>1.7.12</dependency.slf4j.version>
+    </properties>
+
+    <build>
+
+        <pluginManagement>
+            <plugins>
+
+                <!-- Enforce minimum Java and Maven versions in a lifecycle
+                     aware manner.
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>1.4</version>
+                    <executions>
+                        <execution>
+                            <id>default-lifecycle</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>clean-lifecycle</id>
+                            <phase>pre-clean</phase>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>site-lifecycle</id>
+                            <phase>presite</phase>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <rules>
+                            <requireJavaVersion>
+                                <version>[${project.java.version},)</version>
+                            </requireJavaVersion>
+                            <requireMavenVersion>
+                                <!-- Maven 3.2.5+ -->
+                                <version>[3.2.5,)</version>
+                            </requireMavenVersion>
+                        </rules>
+                    </configuration>
+                </plugin>
+
+                <!-- Compilation configuration for both code and resources. -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.3</version>
+                    <configuration>
+                        <fork>true</fork>
+                        <optimize>true</optimize>
+                        <debug>false</debug>
+                        <showDeprecation>true</showDeprecation>
+                        <showWarnings>true</showWarnings>
+                        <source>${project.java.version}</source>
+                        <target>${project.java.version}</target>
+                        <testSource>${maven.compiler.source}</testSource>
+                        <testTarget>${maven.compiler.target}</testTarget>
+                    </configuration>
+                </plugin>
+
+                <!-- Setup JAR files contain an auto-generated index that speeds
+                     up classloading.
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.6</version>
+                    <configuration>
+                        <archive>
+                            <index>true</index>
+                        </archive>
+                    </configuration>
+                </plugin>
+
+
+                <!-- Configures Proguard obfuscation tool to generate an
+                     obfuscated version of the JAR file that replaces the
+                     default unobfuscated JAR.
+                -->
+                <plugin>
+                    <groupId>com.github.wvengen</groupId>
+                    <artifactId>proguard-maven-plugin</artifactId>
+                    <version>2.0.9</version>
+                    <executions>
+                        <execution>
+                            <id>obfuscation-packaging</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>proguard</goal>
+                            </goals>
+                            <configuration>
+                                <proguardVersion>${tool.proguard.version}</proguardVersion>
+                                <obfuscate>true</obfuscate>
+                                <attach>true</attach>
+                                <appendClassifier>false</appendClassifier>
+                                <addMavenDescriptor>false</addMavenDescriptor>
+                                <injar>${project.build.finalName}.jar</injar>
+                                <injarNotExistsSkip>true</injarNotExistsSkip>
+
+                                <libs>
+                                    <lib>${java.home}/lib/rt.jar</lib>
+                                </libs>
+
+                                <options>
+                                    <option>-keepparameternames</option>
+                                    <option>-renamesourcefileattribute SourceFile</option>
+                                    <option>-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod</option>
+                                    <option>-target ${project.java.version}</option>
+                                    <option>-keep public class * {
+                                        public protected *;
+                                        }
+                                    </option>
+                                    <option>-keepclassmembernames class * {
+                                        java.lang.Class class$(java.lang.String);
+                                        java.lang.Class class$(java.lang.String, boolean);
+                                        }
+                                    </option>
+                                    <option>-keepclasseswithmembernames,includedescriptorclasses class * {
+                                        native <![CDATA[<methods>]]>;
+                                        }
+                                    </option>
+                                    <option>-keepclassmembers,allowoptimization enum * {
+                                        public static **[] values();
+                                        public static ** valueOf(java.lang.String);
+                                        }
+                                    </option>
+                                    <option>-keepclassmembers class * implements java.io.Serializable {
+                                        static final long serialVersionUID;
+                                        private static final java.io.ObjectStreamField[] serialPersistentFields;
+                                        private void writeObject(java.io.ObjectOutputStream);
+                                        private void readObject(java.io.ObjectInputStream);
+                                        java.lang.Object writeReplace();
+                                        java.lang.Object readResolve();
+                                        }
+                                    </option>
+                                </options>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>net.sf.proguard</groupId>
+                            <artifactId>proguard-base</artifactId>
+                            <version>${tool.proguard.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <!-- Generates Javadoc for the child POMs main and test codebase
+                     during package phase using inherited configuration from the
+                     reporting plugins plugin declaration.
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${plugin.maven-javadoc.version}</version>
+                </plugin>
+
+                <!-- Configure site generation to use Reflow skin. Child
+                     modules inherit the site.xml of this project.
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.4</version>
+                    <executions>
+                        <execution>
+                            <id>stage-site</id>
+                            <phase>site</phase>
+                            <goals>
+                                <goal>site</goal>
+                                <goal>stage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <skipDeploy>true</skipDeploy>
+                        <relativizeDecorationLinks>false</relativizeDecorationLinks>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>lt.velykis.maven.skins</groupId>
+                            <artifactId>reflow-velocity-tools</artifactId>
+                            <version>${tool.reflow-skin.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.apache.velocity</groupId>
+                            <artifactId>velocity</artifactId>
+                            <version>1.7</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>1.9.1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>de.jutzig</groupId>
+                    <artifactId>github-release-plugin</artifactId>
+                    <version>1.1.1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.github.github</groupId>
+                    <artifactId>site-maven-plugin</artifactId>
+                    <version>0.12</version>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+
+            <!-- Building this POM runs inherited enforcement policies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+
+
+            <!-- This POM uses inherited site generation policies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+            </plugin>
+
+            <!-- Configures automatic deployment of this POM's generated
+                 artifact to the Sonatype repo using the configuration
+                 inherited from the Sonatype parent POM.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <goals>deploy site-deploy</goals>
+                    <dryRun>true</dryRun>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <branchName>release-@{project.version}</branchName>
+                    <tagNameFormat>v.@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+
+            <!-- Uploads github release triggered via deployment of the POM.
+
+                 See this URL for information on authenticating to Github:
+                 https://github.com/github/maven-plugins#authentication-example
+            -->
+            <plugin>
+                <groupId>de.jutzig</groupId>
+                <artifactId>github-release-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>github-upload-release</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>release</goal>
+                        </goals>
+                        <configuration>
+                            <releaseName>JavaRTMP - v.${project.version}</releaseName>
+                            <tag>v.${project.version}</tag>
+                            <artifact>${project.build.directory}/${project.build.finalName}.jar</artifact>
+                            <description>JavaRTMP project repository as of ${maven.build.timestamp}</description>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Uploads staged site to Github triggered via deployment
+                 of the POM.
+
+                 See this URL for information on authenticating to Github:
+                 https://github.com/github/maven-plugins#authentication-example
+            -->
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>github-upload-site</id>
+                        <phase>site-deploy</phase>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <configuration>
+                            <message>JavaRTMP project site as of ${maven.build.timestamp}</message>
+                            <noJekyll>true</noJekyll>
+                            <merge>true</merge>
+                            <outputDirectory>${project.build.directory}/staging</outputDirectory>
+                            <dryRun>true</dryRun>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <reporting>
+        <plugins>
+
+            <!-- Configuration of the default report settings for
+                the site generation.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.8</version>
+                <configuration>
+                    <showAvatarImages>true</showAvatarImages>
+                    <linkOnly>true</linkOnly>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                            <report>summary</report>
+                            <report>license</report>
+                            <report>project-team</report>
+                            <report>scm</report>
+                            <report>cim</report>
+                            <report>issue-tracking</report>
+                            <report>dependencies</report>
+                            <report>dependency-convergence</report>
+                            <report>plugins</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+            <!-- Configure a site report to generate Javadoc using a
+                 custom doclet which provides Markdown, PlantUML, and
+                 automatic highlighting. The Javadoc generated is
+                 for the main and test codebases of each child POM in
+                 addition to a main and test aggregate report for this
+                 parent POM.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${plugin.maven-javadoc.version}</version>
+                <reportSets>
+                    <!-- Inherited per-child goals-->
+                    <reportSet>
+                        <id>document-main-classes</id>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                        <inherited>true</inherited>
+                    </reportSet>
+                    <reportSet>
+                        <id>document-test-classes</id>
+                        <reports>
+                            <report>test-javadoc</report>
+                        </reports>
+                        <inherited>true</inherited>
+                    </reportSet>
+                    <!-- Uninherited parent-only goals-->
+                    <reportSet>
+                        <id>aggregate-main-classes</id>
+                        <reports>
+                            <report>aggregate</report>
+                        </reports>
+                        <inherited>false</inherited>
+                    </reportSet>
+                    <reportSet>
+                        <id>aggregate-test-classes</id>
+                        <reports>
+                            <report>test-aggregate</report>
+                        </reports>
+                        <inherited>false</inherited>
+                    </reportSet>
+                </reportSets>
+                <configuration>
+                    <show>public</show>
+                    <doclet>ch.raffael.doclets.pegdown.PegdownDoclet</doclet>
+                    <docletArtifact>
+                        <groupId>ch.raffael.pegdown-doclet</groupId>
+                        <artifactId>pegdown-doclet</artifactId>
+                        <version>${tool.pegdown-doclet.version}</version>
+                    </docletArtifact>
+                    <useStandardDocletOptions>true</useStandardDocletOptions>
+                    <additionalparam>-overview README.md</additionalparam>
+                    <additionalparam>-extensions autolinks,definitions,fenced-code-blocks,smartypants,tables</additionalparam>
+                    <additionalparam>-enable-auto-highlight</additionalparam>
+                    <additionalparam>-highlight-style ${tool.pegdown-doclet.style}</additionalparam>
+                    <additionalparam>-parse-timeout 5</additionalparam>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </reporting>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- JavaRTMP Common Files -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>JavaRTMP-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- JavaRTMP Action Message Format -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>JavaRTMP-amf</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Project Lombok Annotations -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.16.4</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- Findbugs Warning Supression Annotations -->
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>annotations</artifactId>
+                <version>3.0.0</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- API interface for slf4j logging framework-->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${dependency.slf4j.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <!-- Apache MINA -->
+            <dependency>
+                <groupId>org.apache.mina</groupId>
+                <artifactId>mina-core</artifactId>
+                <version>2.0.9</version>
+            </dependency>
+
+            <!-- JOOU Unsigned Primatives -->
+            <dependency>
+                <groupId>org.jooq</groupId>
+                <artifactId>joou</artifactId>
+                <version>0.9.1</version>
+            </dependency>
+
+            <!-- Cosmopolitan i18n library -->
+            <dependency>
+                <groupId>c10n</groupId>
+                <artifactId>c10n-core</artifactId>
+                <version>1.1</version>
+            </dependency>
+
+            <!-- Google guava utility library -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>18.0</version>
+            </dependency>
+
+            <!-- Functional programming -->
+            <dependency>
+                <groupId>org.functionaljava</groupId>
+                <artifactId>functionaljava</artifactId>
+                <version>4.3</version>
+            </dependency>
+
+            <!-- Javolution Real-time Utility Library -->
+            <dependency>
+                <groupId>org.javolution</groupId>
+                <artifactId>javolution-core-java</artifactId>
+                <version>6.0.0</version>
+            </dependency>
+
+            <!-- TestNG unit testing framework -->
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>6.9.4</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- SLF4J system.out API binding -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${dependency.slf4j.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+</project>

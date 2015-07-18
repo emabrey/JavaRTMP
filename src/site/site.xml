@@ -1,0 +1,69 @@
+<project name="JavaRTMP"
+         xmlns="http://maven.apache.org/DECORATION/1.6.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.6.0 http://maven.apache.org/xsd/decoration-1.6.0.xsd">
+    <skin>
+        <groupId>lt.velykis.maven.skins</groupId>
+        <artifactId>reflow-maven-skin</artifactId>
+        <version>${tool.reflow-skin.version}</version>
+    </skin>
+    <publishDate format="yyyy-MM-dd" position="bottom"/>
+    <version position="bottom"/>
+    <googleAnalyticsAccountId>UA-39454217-3</googleAnalyticsAccountId>
+    <custom>
+        <reflowSkin>
+            <theme>bootswatch-spacelab</theme>
+            <navbarInverse>true</navbarInverse>
+            <highlightJs>true</highlightJs>
+            <highlightJsTheme>${tool.pegdown-doclet.style}</highlightJsTheme>
+            <skinAttribution>false</skinAttribution>
+            <brand>
+                <name><![CDATA[JavaRTMP]]></name>
+                <href><![CDATA[https://emabrey.github.io/JavaRTMP/index.html]]></href>
+            </brand>
+            <titleTemplate>%2$s | %1$s</titleTemplate>
+            <toc>sidebar</toc>
+            <topNav>projects|downloads|files|related|reports</topNav>
+            <bottomNav>
+                <column>disabled</column>
+            </bottomNav>
+            <breadcrumbs>false</breadcrumbs>
+            <pages>
+                <about project="JavaRTMP-project">
+                    <titleTemplate>JavaRTMP Project</titleTemplate>
+                    <slogan>Java implementation of the Real Time Messaging Protocol</slogan>
+                </about>
+            </pages>
+        </reflowSkin>
+    </custom>
+    <body>
+        <menu inherit="top" name="Modules" ref="projects">
+            <item
+                href="https://emabrey.github.io/JavaRTMP/index.html"
+                name="JavaRTMP - Parent"/>
+            <item
+                href="https://emabrey.github.io/JavaRTMP/build-resources/index.html"
+                name="JavaRTMP - Static Maven Resources"/>
+            <item
+                href="https://emabrey.github.io/JavaRTMP/code-projects/core/index.html"
+                name="JavaRTMP - Code - Core"/>
+            <item
+                href="https://emabrey.github.io/JavaRTMP/code-projects/amf/index.html"
+                name="JavaRTMP - Code - Action Message Format"/>
+        </menu>
+        <menu inherit="top" name="Files" ref="files">
+            <item href="https://emabrey.github.io/JavaRTMP/readme.html" name="JavaRTMP Readme"/>
+        </menu>
+        <menu inherit="top" name="Downloads" ref="downloads">
+            <item href="https://github.com/emabrey/JavaRTMP/wiki/Usage-Instructions#maven" name="Maven"/>
+            <item href="https://github.com/emabrey/JavaRTMP/wiki/Usage-Instructions#jar-file" name="JAR File"/>
+        </menu>
+        <menu inherit="top" name="Related Sites" ref="related">
+            <item href="https://github.com/emabrey/JavaRTMP/wiki" name="Project Wiki"/>
+            <item href="https://travis-ci.org/emabrey/JavaRTMP" name="travis-ci"/>
+            <item href="https://github.com/emabrey/JavaRTMP" name="GitHub Repository"/>
+            <item href="https://github.com/emabrey/JavaRTMP/issues" name="GitHub Issues"/>
+        </menu>
+        <menu inherit="top" name="Generated Reports" ref="reports"/>
+        <footer></footer>
+    </body>
+</project>

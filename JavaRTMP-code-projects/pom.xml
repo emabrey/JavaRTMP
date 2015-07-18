@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>JavaRTMP-code-projects</artifactId>
+    <parent>
+        <groupId>com.github.emabrey</groupId>
+        <artifactId>JavaRTMP-parent</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+    <packaging>pom</packaging>
+
+    <name>JavaRTMP - Code Projects</name>
+    <description>The code based components of the JavaRTMP library.</description>
+
+    <!-- Use inherited SCM (JavaRTMP has one repository) -->
+    <scm>
+        <url>${parent.project.scm.url}</url>
+        <connection>${parent.project.scm.connection}</connection>
+        <developerConnection>${parent.project.scm.developerConnection}</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <site>
+            <id>github</id>
+            <name>Github Pages</name>
+            <url>https://emabrey.github.io/JavaRTMP/code-projects/</url>
+        </site>
+    </distributionManagement>
+
+    <build>
+
+        <pluginManagement>
+            <plugins>
+
+                <!-- Automatically formats the Java source files of the main
+                     and test directories using the configuration file supplied
+                     within the JavaRTMP-build-resources project.
+                -->
+                <plugin>
+                    <groupId>net.revelc.code</groupId>
+                    <artifactId>formatter-maven-plugin</artifactId>
+                    <version>0.5.2</version>
+                    <executions>
+                        <execution>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>format</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <compilerCompliance>${project.java.version}</compilerCompliance>
+                        <compilerSource>${project.java.version}</compilerSource>
+                        <compilerTargetPlatform>${project.java.version}</compilerTargetPlatform>
+                        <overrideConfigCompilerVersion>true</overrideConfigCompilerVersion>
+                        <lineEnding>KEEP</lineEnding>
+                        <configFile>com/github/emabrey/javartmp/build/plugins/formatter/emabrey-codestyle.xml</configFile>
+                    </configuration>
+                    <dependencies>
+                        <!-- Build classpath resources -->
+                        <dependency>
+                            <groupId>com.github.emabrey</groupId>
+                            <artifactId>JavaRTMP-build-resources</artifactId>
+                            <version>${project.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <!-- Configures how the Findbugs static code analysis tool
+                     should be run pre-compilation.
+                -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <version>3.0.1</version>
+                    <executions>
+                        <execution>
+                            <id>max-effort-main-source-processing</id>
+                            <phase>process-sources</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <effort>Max</effort>
+                        <threshold>Low</threshold>
+                    </configuration>
+                </plugin>
+
+                <!-- Allows specific language features from Java 8 to be
+                     backported to target Java 7 at the bytecode level after
+                     the Java 8 bytecode is generated via the compiler-plugin.
+                     All classes after the execution of this plugin are Java 7
+                     language feature compatible (but JDK code not present in
+                     Java 7 is still unavailable).
+                -->
+                <plugin>
+                    <groupId>net.orfjackal.retrolambda</groupId>
+                    <artifactId>retrolambda-maven-plugin</artifactId>
+                    <version>2.0.2</version>
+                    <executions>
+                        <execution>
+                            <id>backport-main-classes</id>
+                            <phase>process-classes</phase>
+                            <goals>
+                                <goal>process-main</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>backport-test-classes</id>
+                            <phase>process-test-classes</phase>
+                            <goals>
+                                <goal>process-test</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <target>1.7</target>
+                    </configuration>
+                </plugin>
+
+                <!-- Processes class bytecode to verify it is API compatible with
+                     Java 7, eliminating the possibility of overlooking a
+                     mistakenly used Java 8 only class (the type of problem
+                     retrolambda does not address).
+                -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>animal-sniffer-maven-plugin</artifactId>
+                    <version>1.14</version>
+                    <executions>
+                        <execution>
+                            <id>main-codebase-java17-verification</id>
+                            <phase>process-classes</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <configuration>
+                                <signature>
+                                    <groupId>org.codehaus.mojo.signature</groupId>
+                                    <artifactId>java17</artifactId>
+                                    <version>1.0</version>
+                                </signature>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Configures unit tests to be run using multiple threads. -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.18.1</version>
+                    <executions>
+                        <execution>
+                            <id>multithreaded-unit-testing</id>
+                            <phase>test</phase>
+                            <configuration>
+                                <runOrder>failedfirst</runOrder>
+                                <forkCount>1C</forkCount>
+                                <parallel>true</parallel>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+
+            <!-- Building this POM runs inherited enforcement policies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+    </build>
+    <modules>
+        <module>JavaRTMP-amf</module>
+        <module>JavaRTMP-core</module>
+    </modules>
+</project>
