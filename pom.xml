@@ -490,10 +490,10 @@
     <dependencyManagement>
         <dependencies>
 
-            <!-- JavaRTMP Common Files -->
+            <!-- JavaRTMP Core Files -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>JavaRTMP-common</artifactId>
+                <artifactId>JavaRTMP-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
