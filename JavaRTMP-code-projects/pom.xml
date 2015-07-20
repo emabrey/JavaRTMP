@@ -72,7 +72,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>findbugs-maven-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>${plugin.findbugs-maven.version}</version>
                     <executions>
                         <execution>
                             <id>max-effort-main-source-processing</id>
@@ -98,7 +98,7 @@
                 <plugin>
                     <groupId>net.orfjackal.retrolambda</groupId>
                     <artifactId>retrolambda-maven-plugin</artifactId>
-                    <version>2.0.2</version>
+                    <version>2.0.4</version>
                     <executions>
                         <execution>
                             <id>backport-main-classes</id>
@@ -165,14 +165,15 @@
                     </executions>
                 </plugin>
 
-                <!-- JaCoCo unit tests coverage report -->
+                <!-- Prepare unit test coverage data -->
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.7.5.201505241946</version>
+                    <version>${plugin.jacoco-maven.version}</version>
                     <executions>
                         <execution>
-                            <id>prepare-jacoco-agent</id>
+                            <id>prepare-coverage-data</id>
+                            <phase>process-test-sources</phase>
                             <goals>
                                 <goal>prepare-agent</goal>
                             </goals>

@@ -34,13 +34,13 @@
 
     <scm>
         <url>https://github.com/emabrey/JavaRTMP</url>
-        <connection>scm:git:git://github.com/emabrey/JavaRTMP.git</connection>
+        <connection>scm:git:git@github.com:emabrey/JavaRTMP.git</connection>
         <developerConnection>scm:git:git@github.com:emabrey/JavaRTMP.git</developerConnection>
     </scm>
 
     <distributionManagement>
         <site>
-            <id>github</id>
+            <id>gh-pages</id>
             <name>Github Pages</name>
             <url>https://emabrey.github.io/JavaRTMP/</url>
         </site>
@@ -56,6 +56,10 @@
         <url>https://travis-ci.org/emabrey/JavaRTMP</url>
     </ciManagement>
 
+    <prerequisites>
+        <maven>${project.maven.version}</maven>
+    </prerequisites>
+
     <modules>
         <module>JavaRTMP-build-resources</module>
         <module>JavaRTMP-code-projects</module>
@@ -63,12 +67,20 @@
 
     <properties>
         <lineLength>120</lineLength>
+        <timestamp.format.date>yyyy-MM-dd</timestamp.format.date>
+        <timestamp.format.time> HH:mm:ss.SSS, z</timestamp.format.time>
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss.SSS, z</maven.build.timestamp.format>
+        <github.global.server>github</github.global.server>
 
+        <project.maven.version>3.2.5</project.maven.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.java.version>1.8</project.java.version>
 
         <plugin.maven-javadoc.version>2.10.3</plugin.maven-javadoc.version>
+        <plugin.jacoco-maven.version>0.7.5.201505241946</plugin.jacoco-maven.version>
+        <plugin.maven-surefire.version>2.18.1</plugin.maven-surefire.version>
+        <plugin.findbugs-maven.version>3.0.1</plugin.findbugs-maven.version>
 
         <tool.proguard.version>5.2.1</tool.proguard.version>
         <tool.pegdown-doclet.version>1.1.1</tool.pegdown-doclet.version>
@@ -119,8 +131,7 @@
                                 <version>[${project.java.version},)</version>
                             </requireJavaVersion>
                             <requireMavenVersion>
-                                <!-- Maven 3.2.5+ -->
-                                <version>[3.2.5,)</version>
+                                <version>[${project.maven.version},)</version>
                             </requireMavenVersion>
                         </rules>
                     </configuration>
@@ -166,7 +177,7 @@
                 <plugin>
                     <groupId>com.github.wvengen</groupId>
                     <artifactId>proguard-maven-plugin</artifactId>
-                    <version>2.0.9</version>
+                    <version>2.0.10</version>
                     <executions>
                         <execution>
                             <id>obfuscation-packaging</id>
@@ -277,28 +288,58 @@
                     </dependencies>
                 </plugin>
 
+                <!-- Manually declare plugin version to prevent incorrect
+                     automatic version selection.
+                -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.6.1</version>
+                </plugin>
+
+                <!-- Manually declare plugin version to prevent incorrect
+                     automatic version selection.
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
                     <version>2.5.2</version>
                 </plugin>
 
+                <!-- Manually declare plugin version to prevent incorrect
+                     automatic version selection.
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+
+                <!-- Manually declare plugin version to prevent incorrect
+                     automatic version selection.
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
+
+                <!-- Manually declare plugin version to prevent incorrect
+                     automatic version selection.
+                -->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>1.9.1</version>
                 </plugin>
 
+                <!-- Manually declare plugin version to prevent incorrect
+                     automatic version selection.
+                -->
                 <plugin>
-                    <groupId>de.jutzig</groupId>
-                    <artifactId>github-release-plugin</artifactId>
-                    <version>1.1.1</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>com.github.github</groupId>
-                    <artifactId>site-maven-plugin</artifactId>
-                    <version>0.12</version>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${plugin.maven-surefire.version}</version>
                 </plugin>
 
             </plugins>
@@ -319,15 +360,36 @@
                 <artifactId>maven-site-plugin</artifactId>
             </plugin>
 
+            <!-- Configure SCM plugin; this plugin is triggered by the
+                release-plugin to verify that the project is not
+                "dirty" with uncommitted changes during an attempted
+                release.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.9.4</version>
+                <configuration>
+                    <timestampFormat>${timestamp.format.time}</timestampFormat>
+                    <dateFormat>${timestamp.format.date}</dateFormat>
+                    <userDateFormat>${timestamp.format.date}</userDateFormat>
+                    <errorMessage>Release failed because of uncommitted local changes. Use git stash or commit the changes to the remote repository.</errorMessage>
+                    <pushChanges>false</pushChanges>
+                </configuration>
+            </plugin>
+
             <!-- Configures automatic deployment of this POM's generated
                  artifact to the Sonatype repo using the configuration
-                 inherited from the Sonatype parent POM.
+                 inherited from the Sonatype parent POM. The SCM plugin
+                 is triggered automatically and it uses the configuration
+                 from above to verify the lack of local modifications.
             -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.2</version>
                 <configuration>
-                    <goals>deploy site-deploy</goals>
+                    <goals>clean scm:check-local-modification deploy site-deploy</goals>
                     <dryRun>true</dryRun>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <useReleaseProfile>false</useReleaseProfile>
@@ -335,6 +397,7 @@
                     <branchName>release-@{project.version}</branchName>
                     <tagNameFormat>v.@{project.version}</tagNameFormat>
                 </configuration>
+                <inherited>false</inherited>
             </plugin>
 
             <!-- Uploads github release triggered via deployment of the POM.
@@ -345,6 +408,7 @@
             <plugin>
                 <groupId>de.jutzig</groupId>
                 <artifactId>github-release-plugin</artifactId>
+                <version>1.1.1</version>
                 <executions>
                     <execution>
                         <id>github-upload-release</id>
@@ -358,6 +422,7 @@
                             <artifact>${project.build.directory}/${project.build.finalName}.jar</artifact>
                             <description>JavaRTMP project repository as of ${maven.build.timestamp}</description>
                         </configuration>
+                        <inherited>false</inherited>
                     </execution>
                 </executions>
             </plugin>
@@ -371,6 +436,7 @@
             <plugin>
                 <groupId>com.github.github</groupId>
                 <artifactId>site-maven-plugin</artifactId>
+                <version>0.12</version>
                 <executions>
                     <execution>
                         <id>github-upload-site</id>
@@ -379,12 +445,15 @@
                             <goal>site</goal>
                         </goals>
                         <configuration>
-                            <message>JavaRTMP project site as of ${maven.build.timestamp}</message>
+                            <repositoryName>JavaRTMP</repositoryName>
+                            <repositoryOwner>emabrey</repositoryOwner>
+                            <message>Deploying JavaRTMP site: ${maven.build.timestamp}</message>
                             <noJekyll>true</noJekyll>
                             <merge>true</merge>
                             <outputDirectory>${project.build.directory}/staging</outputDirectory>
                             <dryRun>true</dryRun>
                         </configuration>
+                        <inherited>false</inherited>
                     </execution>
                 </executions>
             </plugin>
@@ -424,6 +493,37 @@
                 </reportSets>
             </plugin>
 
+            <!-- Generate static code analysis report using Findbugs -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>${plugin.findbugs-maven.version}</version>
+            </plugin>
+
+            <!-- Generate static code analysis report using PMD -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.5</version>
+            </plugin>
+
+            <!-- A site report containing cross-linkable source code
+                 of both main and test Java code files.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.5</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>jxr</report>
+                            <report>test-jxr</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
             <!-- Configure a site report to generate Javadoc using a
                  custom doclet which provides Markdown, PlantUML, and
                  automatic highlighting. The Javadoc generated is
@@ -438,33 +538,24 @@
                 <reportSets>
                     <!-- Inherited per-child goals-->
                     <reportSet>
-                        <id>document-main-classes</id>
+                        <id>document-subproject-classes</id>
                         <reports>
                             <report>javadoc</report>
-                        </reports>
-                        <inherited>true</inherited>
-                    </reportSet>
-                    <reportSet>
-                        <id>document-test-classes</id>
-                        <reports>
                             <report>test-javadoc</report>
                         </reports>
                         <inherited>true</inherited>
                     </reportSet>
                     <!-- Uninherited parent-only goals-->
                     <reportSet>
-                        <id>aggregate-main-classes</id>
+                        <id>aggregate-parent-classes</id>
                         <reports>
                             <report>aggregate</report>
-                        </reports>
-                        <inherited>false</inherited>
-                    </reportSet>
-                    <reportSet>
-                        <id>aggregate-test-classes</id>
-                        <reports>
                             <report>test-aggregate</report>
                         </reports>
                         <inherited>false</inherited>
+                        <configuration>
+                            <overview>${basedir}/src/main/javadoc/overview.md</overview>
+                        </configuration>
                     </reportSet>
                 </reportSets>
                 <configuration>
@@ -475,13 +566,39 @@
                         <artifactId>pegdown-doclet</artifactId>
                         <version>${tool.pegdown-doclet.version}</version>
                     </docletArtifact>
+                    <docfilessubdirs>true</docfilessubdirs>
                     <useStandardDocletOptions>true</useStandardDocletOptions>
-                    <additionalparam>-overview README.md</additionalparam>
                     <additionalparam>-extensions autolinks,definitions,fenced-code-blocks,smartypants,tables</additionalparam>
                     <additionalparam>-enable-auto-highlight</additionalparam>
                     <additionalparam>-highlight-style ${tool.pegdown-doclet.style}</additionalparam>
                     <additionalparam>-parse-timeout 5</additionalparam>
                 </configuration>
+            </plugin>
+
+            <!-- Generate report containing information on unit test
+                 outcomes.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${plugin.maven-surefire.version}</version>
+            </plugin>
+
+            <!-- Generate unit test coverage report using pre-generated
+                 test data.
+            -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${plugin.jacoco-maven.version}</version>
+                <reportSets>
+                    <reportSet>
+                        <id>generate-coverage-report</id>
+                        <reports>
+                            <report>report</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
             </plugin>
 
         </plugins>
@@ -560,7 +677,7 @@
             <dependency>
                 <groupId>org.functionaljava</groupId>
                 <artifactId>functionaljava</artifactId>
-                <version>4.3</version>
+                <version>4.4</version>
             </dependency>
 
             <!-- Javolution Real-time Utility Library -->
@@ -574,7 +691,7 @@
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
-                <version>6.9.4</version>
+                <version>6.9.6</version>
                 <scope>test</scope>
             </dependency>
 
