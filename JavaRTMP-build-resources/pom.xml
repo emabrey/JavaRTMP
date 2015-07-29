@@ -19,27 +19,32 @@
         <developerConnection>${parent.project.scm.developerConnection}</developerConnection>
     </scm>
 
-    <distributionManagement>
-        <site>
-            <id>github</id>
-            <name>Github Pages</name>
-            <url>https://emabrey.github.io/JavaRTMP/build-resources/</url>
-        </site>
-    </distributionManagement>
-
     <build>
+
         <plugins>
 
-            <!-- Building this POM runs inherited enforcement policies -->
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
             </plugin>
 
-            <!-- Generate the JAR using inherited configuration -->
+            <!-- Execute plugin using inherited configuration -->
+            <plugin>
+                <groupId>org.commonjava.maven.plugins</groupId>
+                <artifactId>directory-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
+
+            <!-- Execute plugin using inherited configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
             </plugin>
 
         </plugins>

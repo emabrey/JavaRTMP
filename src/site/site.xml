@@ -22,7 +22,7 @@
             </brand>
             <titleTemplate>%2$s | %1$s</titleTemplate>
             <toc>sidebar</toc>
-            <topNav>projects|downloads|files|related|reports</topNav>
+            <topNav>projects|downloads|related|reports</topNav>
             <bottomNav>
                 <column>disabled</column>
             </bottomNav>
@@ -50,10 +50,7 @@
                 href="https://emabrey.github.io/JavaRTMP/code-projects/amf/index.html"
                 name="JavaRTMP - Code - Action Message Format"/>
         </menu>
-        <menu inherit="top" name="Files" ref="files">
-            <item href="https://emabrey.github.io/JavaRTMP/readme.html" name="JavaRTMP Readme"/>
-        </menu>
-        <menu inherit="top" name="Downloads" ref="downloads">
+        <menu inherit="top" name="Usage Instructions" ref="downloads">
             <item href="https://github.com/emabrey/JavaRTMP/wiki/Usage-Instructions#maven" name="Maven"/>
             <item href="https://github.com/emabrey/JavaRTMP/wiki/Usage-Instructions#jar-file" name="JAR File"/>
         </menu>

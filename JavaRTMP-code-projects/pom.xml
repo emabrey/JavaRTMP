@@ -19,14 +19,6 @@
         <developerConnection>${parent.project.scm.developerConnection}</developerConnection>
     </scm>
 
-    <distributionManagement>
-        <site>
-            <id>github</id>
-            <name>Github Pages</name>
-            <url>https://emabrey.github.io/JavaRTMP/code-projects/</url>
-        </site>
-    </distributionManagement>
-
     <build>
 
         <pluginManagement>
@@ -42,7 +34,8 @@
                     <version>0.5.2</version>
                     <executions>
                         <execution>
-                            <phase>validate</phase>
+                            <id>process-all-sources-main</id>
+                            <phase>initialize</phase>
                             <goals>
                                 <goal>format</goal>
                             </goals>
@@ -75,8 +68,8 @@
                     <version>${plugin.findbugs-maven.version}</version>
                     <executions>
                         <execution>
-                            <id>max-effort-main-source-processing</id>
-                            <phase>process-sources</phase>
+                            <id>max-effort-findbugs-source</id>
+                            <phase>validate</phase>
                             <goals>
                                 <goal>check</goal>
                             </goals>
@@ -98,7 +91,7 @@
                 <plugin>
                     <groupId>net.orfjackal.retrolambda</groupId>
                     <artifactId>retrolambda-maven-plugin</artifactId>
-                    <version>2.0.4</version>
+                    <version>2.0.5</version>
                     <executions>
                         <execution>
                             <id>backport-main-classes</id>
@@ -147,6 +140,44 @@
                     </executions>
                 </plugin>
 
+                <!-- Attach project code sources to the project as a
+                     secondary artifact. This is required by the Sonatype
+                     nexus requirements for OSSRH.
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.4</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources-jar-artifact</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Attach project main javadoc to the project as a
+                     secondary artifact. This is required by the Sonatype
+                     nexus requirements for OSSRH.
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${plugin.maven-javadoc.version}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs-jar-artifact</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
                 <!-- Configures unit tests to be run using multiple threads. -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -173,7 +204,7 @@
                     <executions>
                         <execution>
                             <id>prepare-coverage-data</id>
-                            <phase>process-test-sources</phase>
+                            <phase>initialize</phase>
                             <goals>
                                 <goal>prepare-agent</goal>
                             </goals>
@@ -188,16 +219,21 @@
                     <version>3.1.0</version>
                 </plugin>
 
-
             </plugins>
         </pluginManagement>
 
         <plugins>
 
-            <!-- Building this POM runs inherited enforcement policies -->
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+
+            <!-- Execute plugin using inherited configuration -->
+            <plugin>
+                <groupId>org.commonjava.maven.plugins</groupId>
+                <artifactId>directory-maven-plugin</artifactId>
             </plugin>
 
         </plugins>

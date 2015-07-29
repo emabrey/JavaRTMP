@@ -4,22 +4,18 @@
     <groupId>com.github.emabrey</groupId>
     <artifactId>JavaRTMP-parent</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>9</version>
-    </parent>
     <packaging>pom</packaging>
 
     <name>JavaRTMP - Parent</name>
     <description>JavaRTMP is a pure Java client implementation of the Real Time Messaging Protocol.</description>
-    <url>https://emabrey.github.io/JavaRTMP</url>
+    <url>https://emabrey.github.io/JavaRTMP/latest</url>
 
     <developers>
         <developer>
             <id>emabrey</id>
             <name>Emily Mabrey</name>
-            <email>emilymabrey93@gmail.com</email>
+            <email>emabrey@users.noreply.github.com</email>
+            <organizationUrl>https://github.com/emabrey</organizationUrl>
             <timezone>-5</timezone>
         </developer>
     </developers>
@@ -40,10 +36,14 @@
 
     <distributionManagement>
         <site>
-            <id>gh-pages</id>
-            <name>Github Pages</name>
+            <id>github</id>
+            <name>gh-pages</name>
             <url>https://emabrey.github.io/JavaRTMP/</url>
         </site>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <issueManagement>
@@ -70,12 +70,13 @@
         <timestamp.format.date>yyyy-MM-dd</timestamp.format.date>
         <timestamp.format.time> HH:mm:ss.SSS, z</timestamp.format.time>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss.SSS, z</maven.build.timestamp.format>
-        <github.global.server>github</github.global.server>
 
         <project.maven.version>3.2.5</project.maven.version>
+        <project.java.version>1.8</project.java.version>
+        <project.display.version>${project.version}</project.display.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <project.java.version>1.8</project.java.version>
+        <project.reporting.stagingDirectory>${project.root.basedir}/target/gh-pages</project.reporting.stagingDirectory>
 
         <plugin.maven-javadoc.version>2.10.3</plugin.maven-javadoc.version>
         <plugin.jacoco-maven.version>0.7.5.201505241946</plugin.jacoco-maven.version>
@@ -94,6 +95,58 @@
 
         <pluginManagement>
             <plugins>
+
+                <!-- Explictly define plugin version without configuration -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.6.1</version>
+                </plugin>
+
+                <!-- Explictly define plugin version without configuration -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+
+                <!-- Explictly define plugin version without configuration -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+
+                <!-- Explictly define plugin version without configuration -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
+
+                <!-- Explictly define plugin version without configuration -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${plugin.maven-surefire.version}</version>
+                </plugin>
+
+                <!-- Configure error message generated during SCM dirty check.
+                     The check must be manually triggered during a release by
+                     calling scm:check-local-modification goal.
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>1.9.4</version>
+                    <configuration>
+                        <timestampFormat>${timestamp.format.time}</timestampFormat>
+                        <dateFormat>${timestamp.format.date}</dateFormat>
+                        <userDateFormat>${timestamp.format.date}</userDateFormat>
+                        <errorMessage>Cannot release while local repository has uncommitted changes.</errorMessage>
+                        <pushChanges>false</pushChanges>
+                    </configuration>
+                </plugin>
 
                 <!-- Enforce minimum Java and Maven versions in a lifecycle
                      aware manner.
@@ -137,7 +190,66 @@
                     </configuration>
                 </plugin>
 
-                <!-- Compilation configuration for both code and resources. -->
+                <!-- Determine the basedir of the top level POM. The POM
+                     considered top level is a non-repository POM closest
+                     to the root of the drive (so JavaRTMP-parent in this
+                     case). This property is safe to use in child modules
+                     even if they are being executed standalone.
+                -->
+                <plugin>
+                    <groupId>org.commonjava.maven.plugins</groupId>
+                    <artifactId>directory-maven-plugin</artifactId>
+                    <version>0.1</version>
+                    <executions>
+                        <execution>
+                            <phase>initialize</phase>
+                            <id>determine-absolute-basedir-main</id>
+                            <goals>
+                                <goal>highest-basedir</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <phase>pre-site</phase>
+                            <id>determine-absolute-basedir-site</id>
+                            <goals>
+                                <goal>highest-basedir</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <property>project.root.basedir</property>
+                    </configuration>
+                </plugin>
+
+                <!-- Generate a unique and time-based build identifier.
+                -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.3</version>
+                    <executions>
+                        <execution>
+                            <id>generate-build-id-main</id>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>create-timestamp</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>generate-build-id-site</id>
+                            <phase>pre-site</phase>
+                            <goals>
+                                <goal>create-timestamp</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <timestampFormat>${project.build.timestamp.format}</timestampFormat>
+                        <timestampPropertyName>project.timestamp</timestampPropertyName>
+                    </configuration>
+                </plugin>
+
+                <!-- Configure code compilation -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -155,8 +267,8 @@
                     </configuration>
                 </plugin>
 
-                <!-- Setup JAR files contain an auto-generated index that speeds
-                     up classloading.
+                <!-- Configure JAR generation to include the index file
+                     to speed up classloading.
                 -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -168,7 +280,6 @@
                         </archive>
                     </configuration>
                 </plugin>
-
 
                 <!-- Configures Proguard obfuscation tool to generate an
                      obfuscated version of the JAR file that replaces the
@@ -243,14 +354,23 @@
                     </dependencies>
                 </plugin>
 
-                <!-- Generates Javadoc for the child POMs main and test codebase
-                     during package phase using inherited configuration from the
-                     reporting plugins plugin declaration.
+                <!-- Attach armored GPG signatures to the project as a
+                     secondary artifact. This is required by the Sonatype
+                     nexus requirements for OSSRH.
                 -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>${plugin.maven-javadoc.version}</version>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.6</version>
+                    <executions>
+                        <execution>
+                            <id>sign-packaged-artifacts</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <!-- Configure site generation to use Reflow skin. Child
@@ -262,17 +382,29 @@
                     <version>3.4</version>
                     <executions>
                         <execution>
-                            <id>stage-site</id>
+                            <id>stage-latest-site</id>
                             <phase>site</phase>
                             <goals>
-                                <goal>site</goal>
                                 <goal>stage</goal>
                             </goals>
+                            <configuration>
+                                <stagingDirectory>${project.reporting.stagingDirectory}/latest/</stagingDirectory>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>stage-archive-site</id>
+                            <phase>post-site</phase>
+                            <goals>
+                                <goal>stage</goal>
+                            </goals>
+                            <configuration>
+                                <stagingDirectory>${project.reporting.stagingDirectory}/archive/${project.version}/${project.timestamp}/</stagingDirectory>
+                            </configuration>
                         </execution>
                     </executions>
                     <configuration>
-                        <skipDeploy>true</skipDeploy>
                         <relativizeDecorationLinks>false</relativizeDecorationLinks>
+                        <skipDeploy>true</skipDeploy>
                     </configuration>
                     <dependencies>
                         <dependency>
@@ -288,122 +420,32 @@
                     </dependencies>
                 </plugin>
 
-                <!-- Manually declare plugin version to prevent incorrect
-                     automatic version selection.
-                -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>2.6.1</version>
-                </plugin>
-
-                <!-- Manually declare plugin version to prevent incorrect
-                     automatic version selection.
-                -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>2.5.2</version>
-                </plugin>
-
-                <!-- Manually declare plugin version to prevent incorrect
-                     automatic version selection.
-                -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>2.8.2</version>
-                </plugin>
-
-                <!-- Manually declare plugin version to prevent incorrect
-                     automatic version selection.
-                -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>2.7</version>
-                </plugin>
-
-                <!-- Manually declare plugin version to prevent incorrect
-                     automatic version selection.
-                -->
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>1.9.1</version>
-                </plugin>
-
-                <!-- Manually declare plugin version to prevent incorrect
-                     automatic version selection.
-                -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${plugin.maven-surefire.version}</version>
-                </plugin>
-
             </plugins>
         </pluginManagement>
 
         <plugins>
 
-            <!-- Building this POM runs inherited enforcement policies -->
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
             </plugin>
 
-
-            <!-- This POM uses inherited site generation policies -->
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
+                <groupId>org.commonjava.maven.plugins</groupId>
+                <artifactId>directory-maven-plugin</artifactId>
             </plugin>
 
-            <!-- Configure SCM plugin; this plugin is triggered by the
-                release-plugin to verify that the project is not
-                "dirty" with uncommitted changes during an attempted
-                release.
-            -->
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-scm-plugin</artifactId>
-                <version>1.9.4</version>
-                <configuration>
-                    <timestampFormat>${timestamp.format.time}</timestampFormat>
-                    <dateFormat>${timestamp.format.date}</dateFormat>
-                    <userDateFormat>${timestamp.format.date}</userDateFormat>
-                    <errorMessage>Release failed because of uncommitted local changes. Use git stash or commit the changes to the remote repository.</errorMessage>
-                    <pushChanges>false</pushChanges>
-                </configuration>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
             </plugin>
 
-            <!-- Configures automatic deployment of this POM's generated
-                 artifact to the Sonatype repo using the configuration
-                 inherited from the Sonatype parent POM. The SCM plugin
-                 is triggered automatically and it uses the configuration
-                 from above to verify the lack of local modifications.
-            -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.2</version>
-                <configuration>
-                    <goals>clean scm:check-local-modification deploy site-deploy</goals>
-                    <dryRun>true</dryRun>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>release</releaseProfiles>
-                    <branchName>release-@{project.version}</branchName>
-                    <tagNameFormat>v.@{project.version}</tagNameFormat>
-                </configuration>
-                <inherited>false</inherited>
-            </plugin>
-
-            <!-- Uploads github release triggered via deployment of the POM.
-
-                 See this URL for information on authenticating to Github:
-                 https://github.com/github/maven-plugins#authentication-example
+            <!-- Generates a GitHub tagged release during a project deployment.
+                 This release upload uses the configured authentication data
+                 from within settings.xml for the github server id.
             -->
             <plugin>
                 <groupId>de.jutzig</groupId>
@@ -411,51 +453,82 @@
                 <version>1.1.1</version>
                 <executions>
                     <execution>
-                        <id>github-upload-release</id>
+                        <id>create-github-release</id>
                         <phase>deploy</phase>
                         <goals>
                             <goal>release</goal>
                         </goals>
-                        <configuration>
-                            <releaseName>JavaRTMP - v.${project.version}</releaseName>
-                            <tag>v.${project.version}</tag>
-                            <artifact>${project.build.directory}/${project.build.finalName}.jar</artifact>
-                            <description>JavaRTMP project repository as of ${maven.build.timestamp}</description>
-                        </configuration>
-                        <inherited>false</inherited>
                     </execution>
                 </executions>
+                <configuration>
+                    <releaseName>JavaRTMP - v.${project.version}</releaseName>
+                    <tag>v.${project.version}</tag>
+                    <artifact>${project.root.basedir}/target/${project.build.finalName}.jar</artifact>
+                    <description>JavaRTMP project repository as of ${maven.build.timestamp}</description>
+                    <repositoryId>javartmp-site-test</repositoryId>
+                </configuration>
             </plugin>
 
-            <!-- Uploads staged site to Github triggered via deployment
-                 of the POM.
-
-                 See this URL for information on authenticating to Github:
-                 https://github.com/github/maven-plugins#authentication-example
+            <!-- Interface with the Sonatype nexus to deploy the Maven
+                 artifacts of this project. This plugin automagically
+                 replaces the default deploy plugin execution.
             -->
             <plugin>
-                <groupId>com.github.github</groupId>
-                <artifactId>site-maven-plugin</artifactId>
-                <version>0.12</version>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.5</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+
+            <!-- Trigger the deployment of the project artifacts and site
+                 documentation while automatically managing version modification
+                 and project verification.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                    <preparationGoals>clean verify scm:check-local-modification</preparationGoals>
+                    <goals>deploy site-deploy</goals>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <branchName>release-@{project.version}</branchName>
+                    <tagNameFormat>v.@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+
+            <!-- Deploy the site documentation to the gh-pages branch of the
+                 remote GitHub repository. This plugin uses the github server
+                 authentication settings from settings.xml to upload the
+                 documentation.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-publish-plugin</artifactId>
+                <version>1.1</version>
+                <extensions>true</extensions>
                 <executions>
                     <execution>
-                        <id>github-upload-site</id>
+                        <id>publish-site-via-github-pages</id>
                         <phase>site-deploy</phase>
                         <goals>
-                            <goal>site</goal>
+                            <goal>publish-scm</goal>
                         </goals>
-                        <configuration>
-                            <repositoryName>JavaRTMP</repositoryName>
-                            <repositoryOwner>emabrey</repositoryOwner>
-                            <message>Deploying JavaRTMP site: ${maven.build.timestamp}</message>
-                            <noJekyll>true</noJekyll>
-                            <merge>true</merge>
-                            <outputDirectory>${project.build.directory}/staging</outputDirectory>
-                            <dryRun>true</dryRun>
-                        </configuration>
-                        <inherited>false</inherited>
                     </execution>
                 </executions>
+                <configuration>
+                    <pubScmUrl>scm:git:git@github.com:emabrey/javartmp.git</pubScmUrl>
+                    <content>${project.reporting.stagingDirectory}</content>
+                    <scmBranch>gh-pages</scmBranch>
+                    <serverId>github</serverId>
+                </configuration>
             </plugin>
 
         </plugins>
@@ -554,7 +627,7 @@
                         </reports>
                         <inherited>false</inherited>
                         <configuration>
-                            <overview>${basedir}/src/main/javadoc/overview.md</overview>
+                            <overview>${project.root.basedir}/src/main/javadoc/overview.md</overview>
                         </configuration>
                     </reportSet>
                 </reportSets>
@@ -629,7 +702,7 @@
                 <scope>provided</scope>
             </dependency>
 
-            <!-- Findbugs Warning Supression Annotations -->
+            <!-- Findbugs Warning Suppression Annotations -->
             <dependency>
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>annotations</artifactId>

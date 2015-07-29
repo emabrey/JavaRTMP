@@ -19,69 +19,89 @@
         <developerConnection>${parent.project.scm.developerConnection}</developerConnection>
     </scm>
 
-    <distributionManagement>
-        <site>
-            <id>github</id>
-            <name>Github Pages</name>
-            <url>https://emabrey.github.io/JavaRTMP/code-projects/amf/</url>
-        </site>
-    </distributionManagement>
-
     <build>
 
-        <!-- Use inherited plugin configurations for build-->
         <plugins>
 
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
             </plugin>
 
+            <!-- Execute plugin using inherited configuration -->
+            <plugin>
+                <groupId>org.commonjava.maven.plugins</groupId>
+                <artifactId>directory-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>net.revelc.code</groupId>
                 <artifactId>formatter-maven-plugin</artifactId>
             </plugin>
 
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
             </plugin>
 
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
 
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>net.orfjackal.retrolambda</groupId>
                 <artifactId>retrolambda-maven-plugin</artifactId>
             </plugin>
 
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>animal-sniffer-maven-plugin</artifactId>
             </plugin>
 
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>com.github.wvengen</groupId>
                 <artifactId>proguard-maven-plugin</artifactId>
             </plugin>
 
+            <!-- Execute plugin using inherited configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+
+            <!-- Execute plugin using inherited configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+
+            <!-- Execute plugin using inherited configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
 
+            <!-- Execute plugin using inherited configuration -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -105,7 +125,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Findbugs Warning Supression Annotations -->
+        <!-- Findbugs Warning Suppression Annotations -->
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>annotations</artifactId>
