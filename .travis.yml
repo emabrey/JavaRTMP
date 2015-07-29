@@ -6,7 +6,7 @@ jdk:
 before_install:
   - git submodule update --init --recursive
 
-install: mvn -T 1C install -DskipTests=true
+install: mvn -T 1C install -DskipTests=true -Dgpg.skip=true
 
 after_success:
   - mvn -T 1C clean test org.jacoco:jacoco-maven-plugin:report org.eluder.coveralls:coveralls-maven-plugin:report

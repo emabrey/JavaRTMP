@@ -465,7 +465,6 @@
                     <tag>v.${project.version}</tag>
                     <artifact>${project.root.basedir}/target/${project.build.finalName}.jar</artifact>
                     <description>JavaRTMP project repository as of ${maven.build.timestamp}</description>
-                    <repositoryId>javartmp-site-test</repositoryId>
                 </configuration>
             </plugin>
 
