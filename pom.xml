@@ -131,6 +131,13 @@
                     <version>${plugin.maven-surefire.version}</version>
                 </plugin>
 
+                <!-- Explictly define plugin version without configuration -->
+                <plugin>
+                    <groupId>org.eluder.coveralls</groupId>
+                    <artifactId>coveralls-maven-plugin</artifactId>
+                    <version>3.1.0</version>
+                </plugin>
+
                 <!-- Configure error message generated during SCM dirty check.
                      The check must be manually triggered during a release by
                      calling scm:check-local-modification goal.
@@ -354,6 +361,24 @@
                     </dependencies>
                 </plugin>
 
+                <!-- Attach the JaCoCo java agent to the JVM during the
+                     initialize phase of the Maven execution.
+                -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${plugin.jacoco-maven.version}</version>
+                    <executions>
+                        <execution>
+                            <id>prepare-coverage-data</id>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
                 <!-- Attach armored GPG signatures to the project as a
                      secondary artifact. This is required by the Sonatype
                      nexus requirements for OSSRH.
@@ -512,7 +537,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-scm-publish-plugin</artifactId>
                 <version>1.1</version>
-                <extensions>true</extensions>
                 <executions>
                     <execution>
                         <id>publish-site-via-github-pages</id>

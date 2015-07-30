@@ -22,7 +22,7 @@
             </brand>
             <titleTemplate>%2$s | %1$s</titleTemplate>
             <toc>sidebar</toc>
-            <topNav>projects|downloads|related|reports</topNav>
+            <topNav>projects|related|reports</topNav>
             <bottomNav>
                 <column>disabled</column>
             </bottomNav>
@@ -36,10 +36,7 @@
         </reflowSkin>
     </custom>
     <body>
-        <menu inherit="top" name="Modules" ref="projects">
-            <item
-                href="https://emabrey.github.io/JavaRTMP/index.html"
-                name="JavaRTMP - Parent"/>
+        <menu inherit="top" name="Submodules" ref="projects">
             <item
                 href="https://emabrey.github.io/JavaRTMP/build-resources/index.html"
                 name="JavaRTMP - Static Maven Resources"/>
@@ -50,15 +47,11 @@
                 href="https://emabrey.github.io/JavaRTMP/code-projects/amf/index.html"
                 name="JavaRTMP - Code - Action Message Format"/>
         </menu>
-        <menu inherit="top" name="Usage Instructions" ref="downloads">
-            <item href="https://github.com/emabrey/JavaRTMP/wiki/Usage-Instructions#maven" name="Maven"/>
-            <item href="https://github.com/emabrey/JavaRTMP/wiki/Usage-Instructions#jar-file" name="JAR File"/>
-        </menu>
         <menu inherit="top" name="Related Sites" ref="related">
-            <item href="https://github.com/emabrey/JavaRTMP/wiki" name="Project Wiki"/>
-            <item href="https://travis-ci.org/emabrey/JavaRTMP" name="travis-ci"/>
-            <item href="https://github.com/emabrey/JavaRTMP" name="GitHub Repository"/>
-            <item href="https://github.com/emabrey/JavaRTMP/issues" name="GitHub Issues"/>
+            <item href="https://github.com/emabrey/JavaRTMP/wiki" name="Wiki"/>
+            <item href="https://travis-ci.org/emabrey/JavaRTMP" name="Continuous Integration"/>
+            <item href="https://github.com/emabrey/JavaRTMP" name="Git Repository"/>
+            <item href="https://github.com/emabrey/JavaRTMP/issues" name="Issue Manager"/>
         </menu>
         <menu inherit="top" name="Generated Reports" ref="reports"/>
         <footer></footer>
