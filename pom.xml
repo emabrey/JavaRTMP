@@ -534,29 +534,27 @@
                  documentation.
             -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-scm-publish-plugin</artifactId>
-                <version>1.1</version>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.12</version>
                 <executions>
                     <execution>
-                        <id>publish-site-via-github-pages</id>
+                        <id>publish-site-to-github</id>
                         <phase>site-deploy</phase>
                         <goals>
-                            <goal>publish-scm</goal>
+                            <goal>site</goal>
                         </goals>
+                        <configuration>
+                            <path>${project.reporting.stagingDirectory}</path>
+                            <message>Upload Maven generated site documentation</message>
+                            <merge>true</merge>
+                            <server>github</server>
+                            <repositoryOwner>emabrey</repositoryOwner>
+                            <repositoryName>JavaRTMP</repositoryName>
+                            <branch>refs/heads/gh-pages</branch>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <content>${project.reporting.stagingDirectory}</content>
-                    <pubScmUrl>scm:git:https://emabrey@github.com/emabrey/JavaRTMP.git</pubScmUrl>
-                    <scmBranch>gh-pages</scmBranch>
-                    <serverId>github</serverId>
-                    <ignorePathsToDelete>
-                        <ignorePath>gitmessage.txt</ignorePath>
-                        <ignorePath>.gitignore</ignorePath>
-                        <ignorePath>LICENSE.md</ignorePath>
-                    </ignorePathsToDelete>
-                </configuration>
             </plugin>
 
         </plugins>
