@@ -7,14 +7,14 @@
 JavaRTMP is a pure Java client implementation of the [Real Time Messaging Protocol][rtmp-wiki-article-link] licensed via the [MIT License][project-license-file] and copyrighted by Emily Mabrey. The project is being developed because the available options for accessing RTMP streams via Java are unsatisfactory due to problems such as unfavorable licenses, sparse or nonexistent documentation and unit tests, abandonment of active development, or generally incorrect or incomplete implementations.
 
 ##Project Goals
-  - 100% test coverage of all branches without failing or skipping tests
-  - complete documentation of all methods, classes, and packages
-  - compliance with the official [RTMP][rtmp-wiki-article-link] and [AMF][amf-wiki-article-link] standards
-  - better performance than alternatives (such as [Flazr][flazr-project-link] or [librtmp][librtmp-project-link])
-  - a deterministic Maven build which produces obfuscated, minimized and signed binaries
-  - automatic distribution of `RELEASE` project binaries and documentation to Maven Central repository
-  - automatic distribution of `SNAPSHOT` project binaries to the Sonatype OSS repository
-  - automatic generation of a project site containing up-to-date reports on the project
+  - [ ] 100% test coverage of all branches without failing or skipping tests
+  - [ ] complete documentation of all methods, classes, and packages
+  - [ ] compliance with the official [RTMP][rtmp-wiki-article-link] and [AMF][amf-wiki-article-link] standards
+  - [ ] better performance than alternatives (such as [Flazr][flazr-project-link] or [librtmp][librtmp-project-link])
+  - [ ] a deterministic Maven build which produces obfuscated, minimized and signed binaries
+  - [ ] automatic distribution of `RELEASE` project binaries and documentation to Maven Central repository
+  - [ ] automatic distribution of `SNAPSHOT` project binaries to the Sonatype OSS repository
+  - [ ] automatic generation of a project site containing up-to-date reports on the project
 
 ##How to Contribute
 

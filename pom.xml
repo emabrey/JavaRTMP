@@ -30,8 +30,8 @@
 
     <scm>
         <url>https://github.com/emabrey/JavaRTMP</url>
-        <connection>scm:git:git@github.com:emabrey/JavaRTMP.git</connection>
-        <developerConnection>scm:git:git@github.com:emabrey/JavaRTMP.git</developerConnection>
+        <connection>scm:git:git://github.com/emabrey/JavaRTMP.git</connection>
+        <developerConnection>scm:git:https://emabrey@github.com/emabrey/JavaRTMP.git</developerConnection>
     </scm>
 
     <distributionManagement>
@@ -547,10 +547,11 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <pubScmUrl>scm:git:git@github.com:emabrey/javartmp.git</pubScmUrl>
                     <content>${project.reporting.stagingDirectory}</content>
+                    <pubScmUrl>scm:git:https://emabrey@github.com/emabrey/JavaRTMP.git</pubScmUrl>
                     <scmBranch>gh-pages</scmBranch>
                     <serverId>github</serverId>
+                    <dryRun>true</dryRun>
                 </configuration>
             </plugin>
 
