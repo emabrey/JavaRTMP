@@ -1,0 +1,10 @@
+########################################################################
+#   How to write commit messages                                       
+########################################################################
+# - Remember the committing ABCs: Atomic, Brief, and Complete
+# - Start subject line with capitalization and end without punctuation
+# - Line character lengths (marked below): subject="50|"; body="72|"
+# - Summary uses imperative mood and body includes all changes
+# - The body explains WHAT and WHY; not HOW (code is self-evident)
+# - <verb> - <msg> using verbs: Add, Remove, Refactor, Fix, and Modify
+###############################################50|###################72|
