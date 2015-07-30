@@ -551,7 +551,11 @@
                     <pubScmUrl>scm:git:https://emabrey@github.com/emabrey/JavaRTMP.git</pubScmUrl>
                     <scmBranch>gh-pages</scmBranch>
                     <serverId>github</serverId>
-                    <dryRun>true</dryRun>
+                    <ignorePathsToDelete>
+                        <ignorePath>gitmessage.txt</ignorePath>
+                        <ignorePath>.gitignore</ignorePath>
+                        <ignorePath>LICENSE.md</ignorePath>
+                    </ignorePathsToDelete>
                 </configuration>
             </plugin>
 
