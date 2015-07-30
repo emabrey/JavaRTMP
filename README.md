@@ -1,8 +1,8 @@
 #JavaRTMP
-[![Build Status](https://img.shields.io/travis/emabrey/JavaRTMP.svg)](https://travis-ci.org/emabrey/JavaRTMP)
-[![License](https://img.shields.io/:license-mit-blue.svg)](https://emabrey.mit-license.org)
-[![Unit Test Coverage](https://img.shields.io/coveralls/emabrey/JavaRTMP.svg)](https://coveralls.io/r/emabrey/JavaRTMP)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.emabrey/JavaRTMP-parent/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.github.emabrey/JavaRTMP-parent)
+[![\[Build Status\]](http://img.shields.io/travis/emabrey/JavaRTMP.svg)](https://travis-ci.org/emabrey/JavaRTMP)
+[![\[Test Coverage\]](https://img.shields.io/coveralls/emabrey/JavaRTMP.svg)](https://coveralls.io/r/emabrey/JavaRTMP)
+[![\[License\]](http://img.shields.io/:license-mit-blue.svg)](http://emabrey.mit-license.org)
+[![\[Maven Central\]](https://maven-badges.herokuapp.com/maven-central/com.github.emabrey/JavaRTMP-parent/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.github.emabrey/JavaRTMP-parent)
 
 JavaRTMP is a pure Java client implementation of the [Real Time Messaging Protocol][rtmp-wiki-article-link] licensed via the [MIT License][project-license-file] and copyrighted by Emily Mabrey. The project is being developed because the available options for accessing RTMP streams via Java are unsatisfactory due to problems such as unfavorable licenses, sparse or nonexistent documentation and unit tests, abandonment of active development, or generally incorrect or incomplete implementations.
 
