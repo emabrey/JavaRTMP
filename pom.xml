@@ -531,7 +531,7 @@
             <!-- Deploy the site documentation to the gh-pages branch of the
                  remote GitHub repository. This plugin uses the github server
                  authentication settings from settings.xml to upload the
-                 documentation.
+                 documentation. This plugin must be executed manually using
             -->
             <plugin>
                 <groupId>com.github.github</groupId>
@@ -544,17 +544,21 @@
                         <goals>
                             <goal>site</goal>
                         </goals>
-                        <configuration>
-                            <path>${project.reporting.stagingDirectory}</path>
-                            <message>Upload Maven generated site documentation</message>
-                            <merge>true</merge>
-                            <server>github</server>
-                            <repositoryOwner>emabrey</repositoryOwner>
-                            <repositoryName>JavaRTMP</repositoryName>
-                            <branch>refs/heads/gh-pages</branch>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <project>
+                        <groupId>com.github.emabrey</groupId>
+                        <artifactId>JavaRTMP-parent</artifactId>
+                    </project>
+                    <outputDirectory>${project.reporting.stagingDirectory}</outputDirectory>
+                    <message>Deploy site documentation for JavaRTMP</message>
+                    <merge>true</merge>
+                    <server>github</server>
+                    <repositoryOwner>emabrey</repositoryOwner>
+                    <repositoryName>JavaRTMP</repositoryName>
+                    <branch>refs/heads/gh-pages</branch>
+                </configuration>
             </plugin>
 
         </plugins>
