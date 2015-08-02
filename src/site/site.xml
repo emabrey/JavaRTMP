@@ -17,8 +17,8 @@
             <highlightJsTheme>${tool.pegdown-doclet.style}</highlightJsTheme>
             <skinAttribution>false</skinAttribution>
             <brand>
-                <name><![CDATA[JavaRTMP]]></name>
-                <href><![CDATA[https://emabrey.github.io/JavaRTMP/index.html]]></href>
+                <name>JavaRTMP</name>
+                <href></href>
             </brand>
             <titleTemplate>%2$s | %1$s</titleTemplate>
             <toc>sidebar</toc>
@@ -36,15 +36,18 @@
         </reflowSkin>
     </custom>
     <body>
-        <menu inherit="top" name="Submodules" ref="projects">
+        <menu inherit="top" name="Modules" ref="projects">
             <item
-                href="https://emabrey.github.io/JavaRTMP/build-resources/index.html"
+                href="/index.html"
+                name="JavaRTMP - Parent"/>
+            <item
+                href="/JavaRTMP-build-resources/index.html"
                 name="JavaRTMP - Static Maven Resources"/>
             <item
-                href="https://emabrey.github.io/JavaRTMP/code-projects/core/index.html"
+                href="/JavaRTMP-code-projects/JavaRTMP-core/index.html"
                 name="JavaRTMP - Code - Core"/>
             <item
-                href="https://emabrey.github.io/JavaRTMP/code-projects/amf/index.html"
+                href="/JavaRTMP-code-projects/JavaRTMP-amf/index.html"
                 name="JavaRTMP - Code - Action Message Format"/>
         </menu>
         <menu inherit="top" name="Related Sites" ref="related">

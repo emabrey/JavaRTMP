@@ -1,4 +1,4 @@
-#JavaRTMP [![Build Status](https://travis-ci.org/emabrey/JavaRTMP.png)](https://travis-ci.org/emabrey/JavaRTMP)
+#JavaRTMP
 
 JavaRTMP is a pure Java client implementation of the [Real Time Messaging Protocol][rtmp-wiki-article-link] licensed via the [MIT License][project-license-link] and copyrighted by Emily Mabrey. For more details on the project, please [view the README][project-readme-file].
 
@@ -12,7 +12,7 @@ To use the JavaRTMP library in your Maven project, add this dependency to `pom.x
 <dependency>
   <groupId>com.github.emabrey</groupId>
   <artifactId>JavaRTMP-project</artifactId>
-  <version>${project.display.version}</version>
+  <version>${exampleUsageDependencyVersion}</version>
 </dependency>
 ```
 
@@ -31,5 +31,5 @@ For other ways to use JavaRTMP in your project, visit the [usage instructions wi
 [rtmp-wiki-article-link]: https://wikipedia.org/wiki/Real_Time_Messaging_Protocol
 [amf-wiki-article-link]: https://wikipedia.org/wiki/Action_Message_Format
 [project-license-link]: https://github.com/emabrey/JavaRTMP/LICENSE.md
-[project-readme-file]: readme.html
+[project-readme-file]: /readme.html
 [maven-usage]: https://github.com/emabrey/JavaRTMP/wiki/Usage-Instructions

@@ -8,7 +8,7 @@
 
     <name>JavaRTMP - Parent</name>
     <description>JavaRTMP is a pure Java client implementation of the Real Time Messaging Protocol.</description>
-    <url>https://emabrey.github.io/JavaRTMP/latest</url>
+    <url>http://emabrey.github.io/JavaRTMP/latest</url>
 
     <developers>
         <developer>
@@ -73,7 +73,6 @@
 
         <project.maven.version>3.2.5</project.maven.version>
         <project.java.version>1.8</project.java.version>
-        <project.display.version>${project.version}</project.display.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.reporting.stagingDirectory>${project.root.basedir}/target/gh-pages</project.reporting.stagingDirectory>
@@ -418,7 +417,7 @@
                         </execution>
                         <execution>
                             <id>stage-archive-site</id>
-                            <phase>post-site</phase>
+                            <phase>site-deploy</phase>
                             <goals>
                                 <goal>stage</goal>
                             </goals>
@@ -430,6 +429,9 @@
                     <configuration>
                         <relativizeDecorationLinks>false</relativizeDecorationLinks>
                         <skipDeploy>true</skipDeploy>
+                        <attributes>
+                            <exampleUsageDependencyVersion>${project.version}</exampleUsageDependencyVersion>
+                        </attributes>
                     </configuration>
                     <dependencies>
                         <dependency>
